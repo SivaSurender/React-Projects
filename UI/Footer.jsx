@@ -6,7 +6,7 @@ function Footer() {
     getHour > 19 ? "Sorry we're closed" : "We're currently open";
 
   return (
-    <footer>
+    <footer className="footer">
       {new Date().toLocaleTimeString()} {displayMsg}
     </footer>
   );

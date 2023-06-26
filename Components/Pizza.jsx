@@ -1,12 +1,13 @@
 import React from "react";
 import { pizzaData } from "../public/data";
-import margItem from "../public/pizzas/margherita.jpg";
+import margItem from "/pizzas/margherita.jpg";
 
 function Pizza() {
   return (
     <div>
-      <h3>Margheritta</h3>
       <img src={margItem} alt="pizza" />
+      <h3>Margheritta</h3>
+      <p>To,ato, spinach, ricatto</p>
     </div>
   );
 }
