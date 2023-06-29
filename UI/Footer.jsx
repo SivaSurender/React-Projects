@@ -7,7 +7,13 @@ function Footer() {
 
   return (
     <footer className="footer">
-      {new Date().toLocaleTimeString()} {displayMsg}
+      <div className="order">
+        <p>
+          {" "}
+          {new Date().toLocaleTimeString()} {displayMsg}
+        </p>
+        <button className="btn">Order Now</button>
+      </div>
     </footer>
   );
 }
