@@ -1,3 +1,5 @@
+import { useState } from "react";
+
 const initialItems = [
   { id: 1, description: "Passports", quantity: 2, packed: false },
   { id: 2, description: "Socks", quantity: 12, packed: false },
@@ -5,11 +7,16 @@ const initialItems = [
 ];
 
 function App() {
+  const [data, setData] = useState(initialItems);
+
+  const getData = (init) => {
+    setData((prev) => [...prev, init]);
+  };
   return (
     <div className="app">
       <Logo />
-      <Form />
-      <PackingList />
+      <Form getData={getData} />
+      <PackingList data={data} />
       <Stats />
     </div>
   );
@@ -18,19 +25,65 @@ function App() {
 function Logo() {
   return <h1>Far Away C-List</h1>;
 }
-function Form() {
+
+function Form({ getData }) {
+  const [userDetails, setUserDetails] = useState({
+    selectVal: 1,
+    description: "",
+  });
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
+    if (!userDetails.description) return;
+    const newlyAdded = {
+      id: Date.now(),
+      description: userDetails.description,
+      quantity: userDetails.selectVal,
+      packed: false,
+    };
+    getData(newlyAdded);
+    setUserDetails({ selectVal: 1, description: "" });
+  };
+
   return (
-    <div className="add-form">
+    <form className="add-form" onSubmit={formSubmitHandler}>
       <h3>What do you need for your trip?</h3>
-    </div>
+      <select
+        value={userDetails.selectVal}
+        onChange={(e) =>
+          setUserDetails((prev) => ({
+            ...prev,
+            selectVal: +e.target.value,
+          }))
+        }
+      >
+        {Array.from({ length: 20 }, (_, index) => index + 1).map(
+          (each, index) => {
+            return (
+              <option value={each} key={index}>
+                {each}
+              </option>
+            );
+          }
+        )}
+      </select>
+      <input
+        type="text"
+        placeholder="Add Item"
+        value={userDetails.description}
+        onChange={(e) =>
+          setUserDetails((prev) => ({ ...prev, description: e.target.value }))
+        }
+      />
+      <button type="submit">Add</button>
+    </form>
   );
 }
-function PackingList() {
+function PackingList({ data }) {
   return (
     <div className="list">
       <ul>
-        {initialItems.map((each, index) => (
-          <Item item={each} />
+        {data.map((each, index) => (
+          <Item key={each.id} item={each} />
         ))}
       </ul>
     </div>
