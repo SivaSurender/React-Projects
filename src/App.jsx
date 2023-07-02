@@ -12,11 +12,36 @@ function App() {
   const getData = (init) => {
     setData((prev) => [...prev, init]);
   };
+
+  const deleteHandler = (id) => {
+    setData((prev) =>
+      prev.filter((each, index) => {
+        return each.id !== id;
+      })
+    );
+  };
+
+  const checkHandler = (id) => {
+    console.log(id);
+    setData((prev) => {
+      console.log(prev);
+      return prev.map((each, index) => {
+        if (each.id === id) {
+          return { ...each, packed: !each.packed };
+        }
+        return each;
+      });
+    });
+  };
   return (
     <div className="app">
       <Logo />
       <Form getData={getData} />
-      <PackingList data={data} />
+      <PackingList
+        data={data}
+        deleteHandler={deleteHandler}
+        checkHandler={checkHandler}
+      />
       <Stats />
     </div>
   );
@@ -78,24 +103,34 @@ function Form({ getData }) {
     </form>
   );
 }
-function PackingList({ data }) {
+function PackingList({ data, deleteHandler, checkHandler }) {
   return (
     <div className="list">
       <ul>
         {data.map((each, index) => (
-          <Item key={each.id} item={each} />
+          <Item
+            key={each.id}
+            item={each}
+            deleteHandler={deleteHandler}
+            checkHandler={checkHandler}
+          />
         ))}
       </ul>
     </div>
   );
 }
-function Item({ item }) {
+function Item({ item, deleteHandler, checkHandler }) {
   return (
     <li>
+      <input
+        type="checkbox"
+        value={item.packed}
+        onChange={() => checkHandler(item.id)}
+      />
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}
       </span>
-      <button>❌</button>
+      <button onClick={() => deleteHandler(item.id)}> ❌</button>
     </li>
   );
 }
