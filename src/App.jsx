@@ -3,7 +3,7 @@ import { useState } from "react";
 const initialItems = [
   { id: 1, description: "Passports", quantity: 2, packed: false },
   { id: 2, description: "Socks", quantity: 12, packed: false },
-  { id: 3, description: "Charger", quantity: 10, packed: true },
+  { id: 3, description: "Charger", quantity: 10, packed: false },
 ];
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
         deleteHandler={deleteHandler}
         checkHandler={checkHandler}
       />
-      <Stats />
+      <Stats data={data} />
     </div>
   );
 }
@@ -104,10 +104,23 @@ function Form({ getData }) {
   );
 }
 function PackingList({ data, deleteHandler, checkHandler }) {
+  const [sortValue, setSortValue] = useState("input");
+
+  let sortedItems;
+
+  if (sortValue === "input") sortedItems = data;
+  if (sortValue === "description") {
+    sortedItems = data
+      .slice()
+      .sort((a, b) => a.description.localeCompare(b.description));
+  }
+  if (sortValue === "packed") {
+    sortedItems = data.slice().sort((a, b) => +a.packed - +b.packed);
+  }
   return (
     <div className="list">
       <ul>
-        {data.map((each, index) => (
+        {sortedItems.map((each, index) => (
           <Item
             key={each.id}
             item={each}
@@ -116,6 +129,16 @@ function PackingList({ data, deleteHandler, checkHandler }) {
           />
         ))}
       </ul>
+      <div className="actions">
+        <select
+          value={sortValue}
+          onChange={(e) => setSortValue(e.target.value)}
+        >
+          <option value="input"> Sort by Input</option>
+          <option value="description"> Sort by Description</option>
+          <option value="packed"> Sort by Packing Status</option>
+        </select>
+      </div>
     </div>
   );
 }
@@ -135,10 +158,18 @@ function Item({ item, deleteHandler, checkHandler }) {
   );
 }
 
-function Stats() {
+function Stats({ data }) {
+  const packed = data.filter((each) => each.packed).length;
+  const percent = Math.round((packed / data.length) * 100);
   return (
     <footer className="stats">
-      <em>You have X items on your list and you already packed X (X%)</em>
+      <em>
+        {data.length === 0
+          ? "Add items to the list to get started"
+          : percent === 100
+          ? "You're all set✈"
+          : `You have ${data.length} items on your list and you already packed ${packed} (${percent}%)`}
+      </em>
     </footer>
   );
 }
