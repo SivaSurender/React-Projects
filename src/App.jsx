@@ -33,6 +33,14 @@ function App() {
       });
     });
   };
+
+  const listDeleteHandler = () => {
+    const getConf = window.confirm(
+      `Are you sure you want to clear all your list with ${data.length} items ?`
+    );
+
+    getConf && setData([]);
+  };
   return (
     <div className="app">
       <Logo />
@@ -41,6 +49,7 @@ function App() {
         data={data}
         deleteHandler={deleteHandler}
         checkHandler={checkHandler}
+        listDeleteHandler={listDeleteHandler}
       />
       <Stats data={data} />
     </div>
@@ -103,7 +112,7 @@ function Form({ getData }) {
     </form>
   );
 }
-function PackingList({ data, deleteHandler, checkHandler }) {
+function PackingList({ data, deleteHandler, checkHandler, listDeleteHandler }) {
   const [sortValue, setSortValue] = useState("input");
 
   let sortedItems;
@@ -138,6 +147,7 @@ function PackingList({ data, deleteHandler, checkHandler }) {
           <option value="description"> Sort by Description</option>
           <option value="packed"> Sort by Packing Status</option>
         </select>
+        <button onClick={listDeleteHandler}>Clear List</button>
       </div>
     </div>
   );
