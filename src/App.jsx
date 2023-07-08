@@ -19,18 +19,26 @@ export const initialFriends = [
   },
 ];
 
-import React from "react";
+import React, { useState } from "react";
 import FriendsList from "../FriendsList";
 import FormSplitBill from "../FormSplitBill";
 import FormAddFriend from "../FormAddFriend";
 
 function App() {
+  const [showAdd, setShowAdd] = useState(false);
+  const [masterData, setMasterData] = useState(initialFriends);
+
+  const getMasterData = (data) => {
+    setMasterData((prev) => [...prev, data]);
+  };
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendsList />
-        <FormAddFriend />
-        <button className="button">Add Friend</button>
+        <FriendsList masterData={masterData} />
+        {showAdd && <FormAddFriend getMasterData={getMasterData} />}
+        <button className="button" onClick={() => setShowAdd((prev) => !prev)}>
+          {showAdd ? "Close" : "Add Friend"}
+        </button>
       </div>
       <FormSplitBill />
     </div>

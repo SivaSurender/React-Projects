@@ -1,12 +1,11 @@
 import React from "react";
 
-import { initialFriends } from "./src/App";
 import IndFriend from "./IndFriend";
 
-function FriendsList() {
+function FriendsList({ masterData }) {
   return (
     <div>
-      {initialFriends.map((each) => {
+      {masterData.map((each) => {
         return <IndFriend friend={each} key={each.id} />;
       })}
     </div>
