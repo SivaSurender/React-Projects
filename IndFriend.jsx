@@ -1,8 +1,19 @@
 import React from "react";
 
-function IndFriend({ friend }) {
+function IndFriend({
+  friend,
+  setShowSelected,
+  setSelectedData,
+  selectedData,
+  showSelected,
+  setShowAdd,
+}) {
   return (
-    <li>
+    <li
+      className={
+        selectedData.id && showSelected === friend.id ? "selected" : ""
+      }
+    >
       <img src={friend.image} alt={friend.name} />
       <h1>{friend.name}</h1>
       {friend.balance > 0 ? (
@@ -18,7 +29,16 @@ function IndFriend({ friend }) {
       ) : (
         <p className="">You and {friend.name} are even</p>
       )}
-      <button className="button">Select</button>
+      <button
+        onClick={(e) => {
+          setShowAdd(false);
+          setShowSelected((prev) => !prev);
+          setSelectedData(friend);
+        }}
+        className="button"
+      >
+        {selectedData.id === friend.id && showSelected ? "Close" : "Select"}
+      </button>
     </li>
   );
 }

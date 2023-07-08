@@ -27,20 +27,48 @@ import FormAddFriend from "../FormAddFriend";
 function App() {
   const [showAdd, setShowAdd] = useState(false);
   const [masterData, setMasterData] = useState(initialFriends);
+  const [showSelected, setShowSelected] = useState(false);
+  const [selectedData, setSelectedData] = useState({});
 
   const getMasterData = (data) => {
     setMasterData((prev) => [...prev, data]);
+    setShowAdd(false);
   };
+
+  const getSplitHandler = (data) => {
+    console.log(data);
+    setMasterData((prev) => {
+      return prev.map((each) => {
+        return each.id === selectedData.id
+          ? { ...each, balance: each.balance + data }
+          : each;
+      });
+    });
+  };
+  console.log(masterData, "mas");
+
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendsList masterData={masterData} />
+        <FriendsList
+          masterData={masterData}
+          setShowSelected={setShowSelected}
+          setSelectedData={setSelectedData}
+          selectedData={selectedData}
+          showSelected={showSelected}
+          setShowAdd={setShowAdd}
+        />
         {showAdd && <FormAddFriend getMasterData={getMasterData} />}
         <button className="button" onClick={() => setShowAdd((prev) => !prev)}>
           {showAdd ? "Close" : "Add Friend"}
         </button>
       </div>
-      <FormSplitBill />
+      {showSelected && (
+        <FormSplitBill
+          selectedData={selectedData}
+          getSplitHandler={getSplitHandler}
+        />
+      )}
     </div>
   );
 }

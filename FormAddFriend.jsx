@@ -9,6 +9,7 @@ function FormAddFriend({ getMasterData }) {
   });
 
   const addFriendHandle = (e) => {
+    if (!user.name) return;
     e.preventDefault();
     const Obj = {
       ...user,
