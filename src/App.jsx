@@ -21,13 +21,18 @@ export const initialFriends = [
 
 import React from "react";
 import FriendsList from "../FriendsList";
+import FormSplitBill from "../FormSplitBill";
+import FormAddFriend from "../FormAddFriend";
 
 function App() {
   return (
     <div className="app">
       <div className="sidebar">
         <FriendsList />
+        <FormAddFriend />
+        <button className="button">Add Friend</button>
       </div>
+      <FormSplitBill />
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import React from "react";
 
 function IndFriend({ friend }) {
-  console.log(friend);
   return (
     <li>
       <img src={friend.image} alt={friend.name} />
@@ -19,6 +18,7 @@ function IndFriend({ friend }) {
       ) : (
         <p className="">You and {friend.name} are even</p>
       )}
+      <button className="button">Select</button>
     </li>
   );
 }
