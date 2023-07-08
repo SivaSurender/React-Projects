@@ -1,4 +1,4 @@
-const initialFriends = [
+export const initialFriends = [
   {
     id: 118836,
     name: "Clark",
@@ -20,9 +20,16 @@ const initialFriends = [
 ];
 
 import React from "react";
+import FriendsList from "../FriendsList";
 
 function App() {
-  return <div>App</div>;
+  return (
+    <div className="app">
+      <div className="sidebar">
+        <FriendsList />
+      </div>
+    </div>
+  );
 }
 
 export default App;
