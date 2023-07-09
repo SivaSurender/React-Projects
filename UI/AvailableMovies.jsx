@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { tempMovieData } from "../src/App";
 import IndividualAvlMovie from "./IndividualAvlMovie";
 
-function AvailableMovies() {
-  const [movies, setMovies] = useState(tempMovieData);
+function AvailableMovies({ movies }) {
   const [isOpen1, setIsOpen1] = useState(true);
   return (
     <>

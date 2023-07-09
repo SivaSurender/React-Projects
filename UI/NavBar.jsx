@@ -3,7 +3,7 @@ import Logo from "../Logo";
 import Search from "../Components/Search";
 import Results from "../Components/Results";
 
-function NavBar() {
+function NavBar({ movies }) {
   const [query, setQuery] = useState("");
 
   return (
@@ -11,7 +11,7 @@ function NavBar() {
       <nav className="nav-bar">
         <Logo />
         <Search value={query} setValue={setQuery} />
-        <Results />
+        <Results movies={movies} />
       </nav>
     </>
   );

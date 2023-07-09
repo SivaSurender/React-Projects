@@ -3,11 +3,11 @@ import React, { useState } from "react";
 import AvailableMovies from "./AvailableMovies";
 import WatchedMovies from "./WatchedMovies";
 
-function MainScreen() {
+function MainScreen({ movies }) {
   return (
     <>
       <main className="main">
-        <AvailableMovies />
+        <AvailableMovies movies={movies} />
         <WatchedMovies />
       </main>
     </>
