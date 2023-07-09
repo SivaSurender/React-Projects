@@ -1,6 +1,8 @@
 import { useState } from "react";
 import NavBar from "../UI/NavBar";
 import MainScreen from "../UI/MainScreen";
+import Search from "../Components/Search";
+import Results from "../Components/Results";
 
 export const tempMovieData = [
   {
@@ -53,9 +55,13 @@ export const average = (arr) =>
 
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
+  const [query, setQuery] = useState("");
   return (
     <>
-      <NavBar movies={movies} />
+      <NavBar>
+        <Search value={query} setValue={setQuery} />
+        <Results movies={movies} />
+      </NavBar>
       <MainScreen movies={movies} />
     </>
   );

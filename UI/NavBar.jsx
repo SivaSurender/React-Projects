@@ -1,17 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import Logo from "../Logo";
-import Search from "../Components/Search";
-import Results from "../Components/Results";
 
-function NavBar({ movies }) {
-  const [query, setQuery] = useState("");
-
+function NavBar({ children }) {
   return (
     <>
       <nav className="nav-bar">
         <Logo />
-        <Search value={query} setValue={setQuery} />
-        <Results movies={movies} />
+        {children}
       </nav>
     </>
   );
