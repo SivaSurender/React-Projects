@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NavBar from "../UI/NavBar";
 import MainScreen from "../UI/MainScreen";
 import Search from "../Components/Search";
 import Results from "../Components/Results";
 import StarComponent from "../UI/StarComponent";
+const mainKey = "cb7279d0";
 
 export const tempMovieData = [
   {
@@ -57,6 +58,26 @@ export const average = (arr) =>
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    // then catch
+    // fetch(`https://www.omdbapi.com/?apikey=${mainKey}&s=batman`)
+    //   .then((res) => res.json())
+    //   .then((data) => console.log(data));
+
+    // async await
+    const getData = async () => {
+      const initiReq = await fetch(
+        `https://www.omdbapi.com/?apikey=${mainKey}&s=batman`
+      );
+      const modJson = await initiReq.json();
+      setMovies(modJson?.Search);
+    };
+    getData();
+  }, []);
+
+  console.log(movies, "modjson");
+
   return (
     <>
       <NavBar>
