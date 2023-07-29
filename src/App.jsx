@@ -58,6 +58,7 @@ export const average = (arr) =>
 export default function App() {
   const [movies, setMovies] = useState(tempMovieData);
   const [query, setQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // then catch
@@ -67,12 +68,24 @@ export default function App() {
 
     // async await
     const getData = async () => {
-      const initiReq = await fetch(
-        `https://www.omdbapi.com/?apikey=${mainKey}&s=batman`
-      );
-      const modJson = await initiReq.json();
-      setMovies(modJson?.Search);
+      setIsLoading(true);
+      try {
+        const initiReq = await fetch(
+          `https://www.omdbapi.com/?apikey=${mainKey}&s=black adam`
+        );
+        const modJson = await initiReq.json();
+        console.log(modJson, "mod");
+        if (modJson.Response === "False") {
+          throw new Error(modJson.Error);
+        }
+        setMovies(modJson?.Search);
+      } catch (error) {
+        console.log("Error occurred", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
+
     getData();
   }, []);
 
@@ -84,7 +97,7 @@ export default function App() {
         <Search value={query} setValue={setQuery} />
         <Results movies={movies} />
       </NavBar>
-      <MainScreen movies={movies} />
+      <MainScreen movies={movies} isLoading={isLoading} />
       <StarComponent ratingCount={20} />
     </>
   );
