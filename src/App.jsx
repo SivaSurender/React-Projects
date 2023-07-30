@@ -60,7 +60,20 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
+  const [selectedMovieId, setSelectedMovieId] = useState(null);
 
+  const selectMoviehandler = (id) => {
+    setSelectedMovieId((prev) => {
+      if (id === prev) {
+        return null;
+      }
+      return id;
+    });
+  };
+
+  const handleCloseSelected = (id) => {
+    setSelectedMovieId(null);
+  };
   useEffect(() => {
     const controller = new AbortController();
 
@@ -103,7 +116,14 @@ export default function App() {
         <Search value={query} setValue={setQuery} />
         <Results movies={movies} />
       </NavBar>
-      <MainScreen movies={movies} isLoading={isLoading} error={error} />
+      <MainScreen
+        movies={movies}
+        isLoading={isLoading}
+        error={error}
+        selectedMovieId={selectedMovieId}
+        selectMoviehandler={selectMoviehandler}
+        handleCloseSelected={handleCloseSelected}
+      />
       {/* <StarComponent ratingCount={20} /> */}
     </>
   );

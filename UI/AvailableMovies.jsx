@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { tempMovieData } from "../src/App";
 import IndividualAvlMovie from "./IndividualAvlMovie";
 
-function AvailableMovies({ movies }) {
+function AvailableMovies({ movies, selectMoviehandler }) {
   const [isOpen1, setIsOpen1] = useState(true);
   return (
     <>
@@ -14,9 +14,13 @@ function AvailableMovies({ movies }) {
           {isOpen1 ? "–" : "+"}
         </button>
         {isOpen1 && (
-          <ul className="list">
+          <ul className="list list-movies">
             {movies?.map((movie) => (
-              <IndividualAvlMovie movie={movie} key={movie.imdbID} />
+              <IndividualAvlMovie
+                movie={movie}
+                key={movie.imdbID}
+                selectMoviehandler={selectMoviehandler}
+              />
             ))}
           </ul>
         )}

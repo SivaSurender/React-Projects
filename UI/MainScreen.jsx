@@ -4,8 +4,16 @@ import AvailableMovies from "./AvailableMovies";
 import WatchedMovies from "./WatchedMovies";
 import Loader from "./Loader";
 import ErrorLoader from "./ErrorLoader";
+import SelectedMovieDetail from "./SelectedMovieDetail";
 
-function MainScreen({ movies, isLoading, error }) {
+function MainScreen({
+  movies,
+  isLoading,
+  error,
+  selectedMovieId,
+  selectMoviehandler,
+  handleCloseSelected,
+}) {
   console.log(isLoading, "load");
   return (
     <>
@@ -15,9 +23,19 @@ function MainScreen({ movies, isLoading, error }) {
         ) : error.length > 0 ? (
           <ErrorLoader error={error} />
         ) : (
-          <AvailableMovies movies={movies} />
+          <AvailableMovies
+            movies={movies}
+            selectMoviehandler={selectMoviehandler}
+          />
         )}
-        <WatchedMovies />
+        {selectedMovieId ? (
+          <SelectedMovieDetail
+            selectedMovieId={selectedMovieId}
+            handleCloseSelected={handleCloseSelected}
+          />
+        ) : (
+          <WatchedMovies />
+        )}
       </main>
     </>
   );
