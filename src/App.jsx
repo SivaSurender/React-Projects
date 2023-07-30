@@ -56,26 +56,26 @@ export const average = (arr) =>
   arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 export default function App() {
-  const [movies, setMovies] = useState(tempMovieData);
+  const [movies, setMovies] = useState([]);
   const [query, setQuery] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    // then catch
-    // fetch(`https://www.omdbapi.com/?apikey=${mainKey}&s=batman`)
-    //   .then((res) => res.json())
-    //   .then((data) => console.log(data));
+    const controller = new AbortController();
 
-    // async await
     const getData = async () => {
       setIsLoading(true);
+      setError("");
       try {
         const initiReq = await fetch(
-          `https://www.omdbapi.com/?apikey=${mainKey}&s=black adam`
+          `https://www.omdbapi.com/?apikey=${mainKey}&s=${query}`,
+          { signal: controller.signal }
         );
         const modJson = await initiReq.json();
         console.log(modJson, "mod");
         if (modJson.Response === "False") {
+          setError(modJson.Error);
           throw new Error(modJson.Error);
         }
         setMovies(modJson?.Search);
@@ -85,11 +85,17 @@ export default function App() {
         setIsLoading(false);
       }
     };
+    if (query.length < 3) {
+      setMovies([]);
+      setError("");
+      return;
+    }
 
     getData();
-  }, []);
+    return () => controller.abort();
+  }, [query]);
 
-  console.log(movies, "modjson");
+  console.log(error, "modjson");
 
   return (
     <>
@@ -97,8 +103,8 @@ export default function App() {
         <Search value={query} setValue={setQuery} />
         <Results movies={movies} />
       </NavBar>
-      <MainScreen movies={movies} isLoading={isLoading} />
-      <StarComponent ratingCount={20} />
+      <MainScreen movies={movies} isLoading={isLoading} error={error} />
+      {/* <StarComponent ratingCount={20} /> */}
     </>
   );
 }
