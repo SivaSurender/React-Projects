@@ -3,7 +3,7 @@ const mainKey = "cb7279d0";
 import StarComponent from "./StarComponent";
 import Loader from "./Loader";
 
-function SelectedMovieDetail({ selectedMovieId, handleCloseSelected }) {
+function SelectedMovieDetail({ selectedMovieId, setWatched }) {
   const [movieById, setMovieById] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -29,6 +29,27 @@ function SelectedMovieDetail({ selectedMovieId, handleCloseSelected }) {
 
     return () => controller.abort();
   }, [selectedMovieId]);
+
+  // to add movies to watchlist
+
+  const handleWatchedList = () => {
+    console.log(movieById, "moviebyid");
+    setWatched((prev) => {
+      const { imdbRating, Title, Year, Poster, imdbID, Runtime } = movieById;
+      return [
+        ...prev,
+        {
+          imdbID,
+          imdbRating: Number(imdbRating),
+          userRating: Number(imdbRating),
+          Title,
+          Year,
+          Poster,
+          runtime: Number(Runtime.split(" ").at(0)),
+        },
+      ];
+    });
+  };
   return (
     <>
       {isLoaded ? (
@@ -63,6 +84,9 @@ function SelectedMovieDetail({ selectedMovieId, handleCloseSelected }) {
           <section>
             <div className="rating">
               <StarComponent maxRating={10} size={24} />
+              <button className="btn-add" onClick={() => handleWatchedList()}>
+                Add to watched list
+              </button>
             </div>
             <p>
               <p>

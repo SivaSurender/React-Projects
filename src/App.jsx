@@ -62,6 +62,8 @@ export default function App() {
   const [error, setError] = useState("");
   const [selectedMovieId, setSelectedMovieId] = useState(null);
 
+  const [watched, setWatched] = useState(tempWatchedData);
+
   const selectMoviehandler = (id) => {
     setSelectedMovieId((prev) => {
       if (id === prev) {
@@ -123,6 +125,8 @@ export default function App() {
         selectedMovieId={selectedMovieId}
         selectMoviehandler={selectMoviehandler}
         handleCloseSelected={handleCloseSelected}
+        watched={watched}
+        setWatched={setWatched}
       />
       {/* <StarComponent ratingCount={20} /> */}
     </>

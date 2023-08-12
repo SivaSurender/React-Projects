@@ -2,14 +2,13 @@ import React, { useState } from "react";
 import { average, tempWatchedData } from "../src/App";
 import IndividualWatchedMovie from "./IndividualWatchedMovie";
 
-function WatchedMovies() {
+function WatchedMovies({ watched }) {
   const [isOpen2, setIsOpen2] = useState(true);
-  const [watched, setWatched] = useState(tempWatchedData);
 
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
-
+  console.log(watched, "watched");
   return (
     <>
       <div className="box">

@@ -9,7 +9,8 @@ import SelectedMovieDetail from "./SelectedMovieDetail";
 function MainScreen({
   movies,
   isLoading,
-
+  watched,
+  setWatched,
   error,
   selectedMovieId,
   selectMoviehandler,
@@ -33,9 +34,10 @@ function MainScreen({
           <SelectedMovieDetail
             selectedMovieId={selectedMovieId}
             handleCloseSelected={handleCloseSelected}
+            setWatched={setWatched}
           />
         ) : (
-          <WatchedMovies />
+          <WatchedMovies watched={watched} />
         )}
       </main>
     </>
