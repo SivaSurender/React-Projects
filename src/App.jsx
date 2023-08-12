@@ -3,7 +3,7 @@ import NavBar from "../UI/NavBar";
 import MainScreen from "../UI/MainScreen";
 import Search from "../Components/Search";
 import Results from "../Components/Results";
-import StarComponent from "../UI/StarComponent";
+
 const mainKey = "cb7279d0";
 
 export const tempMovieData = [
