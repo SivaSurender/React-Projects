@@ -9,6 +9,7 @@ import SelectedMovieDetail from "./SelectedMovieDetail";
 function MainScreen({
   movies,
   isLoading,
+
   error,
   selectedMovieId,
   selectMoviehandler,
