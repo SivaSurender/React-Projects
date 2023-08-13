@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { tempMovieData } from "../src/App";
+
 import IndividualAvlMovie from "./IndividualAvlMovie";
 
 function AvailableMovies({ movies, selectMoviehandler }) {

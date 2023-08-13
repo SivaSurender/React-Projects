@@ -16,15 +16,14 @@ function SelectedMovieDetail({
 
   // checks if the incoming movie has already added to the list and has a rating
 
-  // const controller = new AbortController();
   useEffect(() => {
+    const controller = new AbortController();
     const getMoviebyId = async () => {
       setIsLoaded(true);
       try {
         const getIdQuery = await fetch(
-          `https://www.omdbapi.com/?apikey=${mainKey}&i=${selectedMovieId}`
-          // ,
-          // { signal: controller.signal }
+          `https://www.omdbapi.com/?apikey=${mainKey}&i=${selectedMovieId}`,
+          { signal: controller.signal }
         );
         const idJson = await getIdQuery.json();
         console.log(idJson, "idjson");
@@ -35,9 +34,10 @@ function SelectedMovieDetail({
         setIsLoaded(false);
       }
     };
+
     getMoviebyId();
 
-    // return () => controller.abort();
+    return () => controller.abort();
   }, [selectedMovieId]);
 
   // to update doc title
@@ -51,6 +51,21 @@ function SelectedMovieDetail({
 
     return () => (document.title = "Pop Movies");
   }, [movieById.Title]);
+
+  // to close selectemovie pane on pressing ESC key
+
+  useEffect(function () {
+    const escCallBack = function (event) {
+      if (event.code === "Escape") {
+        handleCloseSelected(selectedMovieId);
+      }
+    };
+    document.addEventListener("keydown", escCallBack);
+
+    return function () {
+      document.removeEventListener("keydown", escCallBack);
+    };
+  }, []);
 
   // checks if the movie is already rated
 
