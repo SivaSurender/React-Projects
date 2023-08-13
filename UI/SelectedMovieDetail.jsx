@@ -40,6 +40,18 @@ function SelectedMovieDetail({
     // return () => controller.abort();
   }, [selectedMovieId]);
 
+  // to update doc title
+
+  useEffect(() => {
+    if (!movieById) return;
+
+    document.title = movieById.Title;
+
+    // clnup and using stock doc title
+
+    return () => (document.title = "Pop Movies");
+  }, [movieById.Title]);
+
   // checks if the movie is already rated
 
   const rateIdentifier = () => {
