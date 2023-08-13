@@ -10,8 +10,7 @@ const textStyle = {
   margin: "0",
 };
 
-function StarComponent({ ratingCount = 5 }) {
-  const [ratedNum, setRatedNum] = useState(0);
+function StarComponent({ ratingCount = 5, userSetRating, setUserSetRating }) {
   const [tempRating, setTempRating] = useState(0);
 
   return (
@@ -22,12 +21,16 @@ function StarComponent({ ratingCount = 5 }) {
             key={index}
             manageRevertOnChange={() => setTempRating(0)}
             manageOnChange={() => setTempRating(index + 1)}
-            manageRating={() => setRatedNum(index + 1)}
-            full={tempRating ? tempRating >= index + 1 : ratedNum >= index + 1}
+            manageRating={() => {
+              setUserSetRating(index + 1);
+            }}
+            full={
+              tempRating ? tempRating >= index + 1 : userSetRating >= index + 1
+            }
           />
         ))}
       </div>
-      <p style={textStyle}>{ratedNum || tempRating || ""}</p>
+      <p style={textStyle}>{userSetRating || tempRating || ""}</p>
     </div>
   );
 }

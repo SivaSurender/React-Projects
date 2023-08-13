@@ -2,19 +2,27 @@ import React, { useEffect, useState } from "react";
 const mainKey = "cb7279d0";
 import StarComponent from "./StarComponent";
 import Loader from "./Loader";
+import { toast } from "react-toastify";
 
-function SelectedMovieDetail({ selectedMovieId, setWatched }) {
+function SelectedMovieDetail({
+  selectedMovieId,
+  setWatched,
+  handleCloseSelected,
+  watched,
+}) {
   const [movieById, setMovieById] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
+  const [userSetRating, setUserSetRating] = useState(0);
 
-  const controller = new AbortController();
+  // const controller = new AbortController();
   useEffect(() => {
     const getMoviebyId = async () => {
       setIsLoaded(true);
       try {
         const getIdQuery = await fetch(
-          `https://www.omdbapi.com/?apikey=${mainKey}&i=${selectedMovieId}`,
-          { signal: controller.signal }
+          `https://www.omdbapi.com/?apikey=${mainKey}&i=${selectedMovieId}`
+          // ,
+          // { signal: controller.signal }
         );
         const idJson = await getIdQuery.json();
         console.log(idJson, "idjson");
@@ -27,13 +35,22 @@ function SelectedMovieDetail({ selectedMovieId, setWatched }) {
     };
     getMoviebyId();
 
-    return () => controller.abort();
+    // return () => controller.abort();
   }, [selectedMovieId]);
 
-  // to add movies to watchlist
+  // checks if the incoming movie has already added to the list and has a rating
 
+  const initialRateChecker = (mid) => {
+    console.log({ watched, mid }, "initialRateChecker");
+    return watched.filter((each) => each.imdbID === mid);
+  };
+
+  // to add movies to watchlist
   const handleWatchedList = () => {
-    console.log(movieById, "moviebyid");
+    if (initialRateChecker(movieById.imdbID).length > 0) {
+      toast.error("Movie Already added to watchlist");
+      return;
+    }
     setWatched((prev) => {
       const { imdbRating, Title, Year, Poster, imdbID, Runtime } = movieById;
       return [
@@ -41,7 +58,7 @@ function SelectedMovieDetail({ selectedMovieId, setWatched }) {
         {
           imdbID,
           imdbRating: Number(imdbRating),
-          userRating: Number(imdbRating),
+          userRating: userSetRating,
           Title,
           Year,
           Poster,
@@ -49,7 +66,9 @@ function SelectedMovieDetail({ selectedMovieId, setWatched }) {
         },
       ];
     });
+    toast.success("Movie added to watchlist !");
   };
+  console.log(watched, "watched from selectred");
   return (
     <>
       {isLoaded ? (
@@ -57,12 +76,12 @@ function SelectedMovieDetail({ selectedMovieId, setWatched }) {
       ) : (
         <div className="details">
           <header>
-            {/* <button
+            <button
               onClick={() => handleCloseSelected(selectedMovieId)}
               className="btn-back"
             >
               &larr;
-            </button> */}
+            </button>
 
             <img
               src={movieById.Poster}
@@ -82,8 +101,13 @@ function SelectedMovieDetail({ selectedMovieId, setWatched }) {
           </header>
 
           <section>
-            <div className="rating">
-              <StarComponent maxRating={10} size={24} />
+            <div className="">
+              <StarComponent
+                maxRating={10}
+                size={20}
+                userSetRating={userSetRating}
+                setUserSetRating={setUserSetRating}
+              />
               <button className="btn-add" onClick={() => handleWatchedList()}>
                 Add to watched list
               </button>

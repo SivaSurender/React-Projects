@@ -3,6 +3,8 @@ import NavBar from "../UI/NavBar";
 import MainScreen from "../UI/MainScreen";
 import Search from "../Components/Search";
 import Results from "../Components/Results";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const mainKey = "cb7279d0";
 
@@ -114,6 +116,7 @@ export default function App() {
 
   return (
     <>
+      <ToastContainer />
       <NavBar>
         <Search value={query} setValue={setQuery} />
         <Results movies={movies} />

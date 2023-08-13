@@ -35,6 +35,7 @@ function MainScreen({
             selectedMovieId={selectedMovieId}
             handleCloseSelected={handleCloseSelected}
             setWatched={setWatched}
+            watched={watched}
           />
         ) : (
           <WatchedMovies watched={watched} />
