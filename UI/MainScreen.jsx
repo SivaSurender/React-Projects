@@ -17,7 +17,6 @@ function MainScreen({
   handleCloseSelected,
   handleDelete,
 }) {
-  console.log(isLoading, "load");
   return (
     <>
       <main className="main">

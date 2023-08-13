@@ -75,7 +75,7 @@ export default function App() {
     });
   };
 
-  const handleCloseSelected = (id) => {
+  const handleCloseSelected = () => {
     setSelectedMovieId(null);
   };
 
@@ -96,14 +96,13 @@ export default function App() {
           { signal: controller.signal }
         );
         const modJson = await initiReq.json();
-        console.log(modJson, "mod");
+
         if (modJson.Response === "False") {
           setError(modJson.Error);
           throw new Error(modJson.Error);
         }
         setMovies(modJson?.Search);
       } catch (error) {
-        console.log("Error occurred", error);
       } finally {
         setIsLoading(false);
       }
@@ -117,8 +116,6 @@ export default function App() {
     getData();
     return () => controller.abort();
   }, [query]);
-
-  console.log(error, "modjson");
 
   return (
     <>

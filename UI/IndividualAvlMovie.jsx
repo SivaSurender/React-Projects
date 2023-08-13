@@ -1,7 +1,6 @@
 import React from "react";
 
 function IndividualAvlMovie({ movie, selectMoviehandler }) {
-  console.log(movie, "movie");
   return (
     <li onClick={() => selectMoviehandler(movie.imdbID)}>
       <img src={movie.Poster} alt={`${movie.Title} poster`} />

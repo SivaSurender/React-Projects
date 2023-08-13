@@ -8,7 +8,7 @@ function WatchedMovies({ watched, handleDelete }) {
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
   const avgUserRating = average(watched.map((movie) => movie.userRating));
   const avgRuntime = average(watched.map((movie) => movie.runtime));
-  console.log(watched, "watched");
+
   return (
     <>
       <div className="box">

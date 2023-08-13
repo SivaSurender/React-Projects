@@ -26,10 +26,9 @@ function SelectedMovieDetail({
           { signal: controller.signal }
         );
         const idJson = await getIdQuery.json();
-        console.log(idJson, "idjson");
+
         setMovieById(idJson);
       } catch (e) {
-        console.log(e);
       } finally {
         setIsLoaded(false);
       }
@@ -113,7 +112,7 @@ function SelectedMovieDetail({
     // close the pane after its added
     handleCloseSelected(selectedMovieId);
   };
-  console.log(watched, "watched from selectred");
+
   return (
     <>
       {isLoaded ? (
