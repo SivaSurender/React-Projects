@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { average, tempWatchedData } from "../src/App";
 import IndividualWatchedMovie from "./IndividualWatchedMovie";
 
-function WatchedMovies({ watched }) {
+function WatchedMovies({ watched, handleDelete }) {
   const [isOpen2, setIsOpen2] = useState(true);
 
   const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
@@ -29,11 +29,11 @@ function WatchedMovies({ watched }) {
                 </p>
                 <p>
                   <span>⭐️</span>
-                  <span>{avgImdbRating}</span>
+                  <span>{avgImdbRating.toFixed(2)}</span>
                 </p>
                 <p>
                   <span>🌟</span>
-                  <span>{avgUserRating}</span>
+                  <span>{avgUserRating.toFixed(2)}</span>
                 </p>
                 <p>
                   <span>⏳</span>
@@ -44,7 +44,11 @@ function WatchedMovies({ watched }) {
 
             <ul className="list">
               {watched.map((movie) => (
-                <IndividualWatchedMovie movie={movie} key={movie.imdbID} />
+                <IndividualWatchedMovie
+                  movie={movie}
+                  key={movie.imdbID}
+                  handleDelete={handleDelete}
+                />
               ))}
             </ul>
           </>

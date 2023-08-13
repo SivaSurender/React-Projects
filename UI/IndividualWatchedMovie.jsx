@@ -1,6 +1,6 @@
 import React from "react";
 
-function IndividualWatchedMovie({ movie }) {
+function IndividualWatchedMovie({ movie, handleDelete }) {
   return (
     <>
       <li>
@@ -19,6 +19,12 @@ function IndividualWatchedMovie({ movie }) {
             <span>⏳</span>
             <span>{movie.runtime} min</span>
           </p>
+          <button
+            className="btn-delete"
+            onClick={() => handleDelete(movie.imdbID)}
+          >
+            X
+          </button>
         </div>
       </li>
     </>

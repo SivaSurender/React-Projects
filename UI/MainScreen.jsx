@@ -15,6 +15,7 @@ function MainScreen({
   selectedMovieId,
   selectMoviehandler,
   handleCloseSelected,
+  handleDelete,
 }) {
   console.log(isLoading, "load");
   return (
@@ -38,7 +39,7 @@ function MainScreen({
             watched={watched}
           />
         ) : (
-          <WatchedMovies watched={watched} />
+          <WatchedMovies watched={watched} handleDelete={handleDelete} />
         )}
       </main>
     </>

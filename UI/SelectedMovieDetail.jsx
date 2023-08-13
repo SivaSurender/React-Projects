@@ -39,6 +39,17 @@ function SelectedMovieDetail({
 
     // return () => controller.abort();
   }, [selectedMovieId]);
+
+  // checks if the movie is already rated
+
+  const rateIdentifier = () => {
+    return watched?.find((each) => {
+      if (each.imdbID === movieById.imdbID) {
+        return each;
+      }
+    })?.userRating;
+  };
+
   const initialRateChecker = (mid) =>
     watched.filter((each) => {
       if (each.imdbID === mid) {
@@ -108,19 +119,31 @@ function SelectedMovieDetail({
           </header>
 
           <section>
-            <div className="">
-              <StarComponent
-                maxRating={10}
-                size={20}
-                userSetRating={userSetRating}
-                setUserSetRating={setUserSetRating}
-              />
-              {userSetRating > 0 && (
-                <button className="btn-add" onClick={() => handleWatchedList()}>
-                  Add to watched list
-                </button>
-              )}
-            </div>
+            {rateIdentifier() ? (
+              <div className="rating">
+                <span>
+                  {`You have already rated this movie ${rateIdentifier()}`} ⭐
+                </span>
+              </div>
+            ) : (
+              <div className="">
+                <StarComponent
+                  maxRating={10}
+                  size={20}
+                  userSetRating={userSetRating}
+                  setUserSetRating={setUserSetRating}
+                />
+                {userSetRating > 0 && (
+                  <button
+                    className="btn-add"
+                    onClick={() => handleWatchedList()}
+                  >
+                    Add to watched list
+                  </button>
+                )}
+              </div>
+            )}
+
             <p>
               <p>
                 <em>{movieById.Plot}</em>
