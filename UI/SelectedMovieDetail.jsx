@@ -14,6 +14,8 @@ function SelectedMovieDetail({
   const [isLoaded, setIsLoaded] = useState(false);
   const [userSetRating, setUserSetRating] = useState(0);
 
+  // checks if the incoming movie has already added to the list and has a rating
+
   // const controller = new AbortController();
   useEffect(() => {
     const getMoviebyId = async () => {
@@ -37,18 +39,21 @@ function SelectedMovieDetail({
 
     // return () => controller.abort();
   }, [selectedMovieId]);
-
-  // checks if the incoming movie has already added to the list and has a rating
-
-  const initialRateChecker = (mid) => {
-    console.log({ watched, mid }, "initialRateChecker");
-    return watched.filter((each) => each.imdbID === mid);
-  };
+  const initialRateChecker = (mid) =>
+    watched.filter((each) => {
+      if (each.imdbID === mid) {
+        if (each.userRating === userSetRating) {
+          return true;
+        }
+      }
+    });
 
   // to add movies to watchlist
   const handleWatchedList = () => {
     if (initialRateChecker(movieById.imdbID).length > 0) {
       toast.error("Movie Already added to watchlist");
+      //close the pane even if its error
+      handleCloseSelected(selectedMovieId);
       return;
     }
     setWatched((prev) => {
@@ -67,6 +72,8 @@ function SelectedMovieDetail({
       ];
     });
     toast.success("Movie added to watchlist !");
+    // close the pane after its added
+    handleCloseSelected(selectedMovieId);
   };
   console.log(watched, "watched from selectred");
   return (
@@ -108,9 +115,11 @@ function SelectedMovieDetail({
                 userSetRating={userSetRating}
                 setUserSetRating={setUserSetRating}
               />
-              <button className="btn-add" onClick={() => handleWatchedList()}>
-                Add to watched list
-              </button>
+              {userSetRating > 0 && (
+                <button className="btn-add" onClick={() => handleWatchedList()}>
+                  Add to watched list
+                </button>
+              )}
             </div>
             <p>
               <p>
