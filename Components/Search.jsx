@@ -9,7 +9,7 @@ function Search({ value, setValue }) {
     const callBck = function (e) {
       if (e.code === "Enter") {
         searchElement.current.blur();
-      }
+      } else searchElement.current.focus();
     };
     document.addEventListener("keydown", callBck);
 
@@ -19,7 +19,7 @@ function Search({ value, setValue }) {
     <>
       <input
         className="search"
-        type="text"
+        type="search"
         placeholder="Search movies..."
         value={value}
         onChange={(e) => setValue(e.target.value)}
