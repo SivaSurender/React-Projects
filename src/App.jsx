@@ -3,14 +3,20 @@ import Header from "./Header";
 import Main from "./components/Main";
 import Loader from "./Loader";
 import StartScreen from "./components/StartScreen";
+import Error from "./Error";
+import Questions from "./components/Questions";
 
 const initialState = {
   questions: [],
   status: "loading",
+  index: 0,
 };
 function App() {
-  const [{ questions, status }, dispatch] = useReducer(reducerFn, initialState);
-  const numQuestions = questions.length;
+  const [{ questions, status, index }, dispatch] = useReducer(
+    reducerFn,
+    initialState
+  );
+  const numQuestions = questions?.length;
 
   function reducerFn(state, action) {
     switch (action.type) {
@@ -19,6 +25,9 @@ function App() {
       }
       case "dataFetchfailed": {
         return { ...state, status: "error", errorMsg: action.payload };
+      }
+      case "dataActive": {
+        return { ...state, status: "active" };
       }
       default: {
         return initialState;
@@ -52,7 +61,10 @@ function App() {
       <Main>
         {status === "loading" && <Loader />}
         {status === "error" && <Error />}
-        {status === "ready" && <StartScreen numQuestions={numQuestions} />}
+        {status === "ready" && (
+          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+        )}
+        {status === "active" && <Questions questions={questions[index]} />}
       </Main>
     </div>
   );
