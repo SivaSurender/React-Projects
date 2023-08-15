@@ -83,7 +83,28 @@ export default function App() {
     setWatched((prev) => {
       return prev.filter((each) => each.imdbID !== feededId);
     });
+
+    // delete from local
+
+    const temp = JSON.parse(localStorage.getItem("getWatchedlist"))?.filter(
+      (each) => each.imdbID !== feededId
+    );
+    localStorage.removeItem("getWatchedlist");
+
+    // set new updated in local
+
+    localStorage.setItem("getWatchedlist", JSON.stringify(temp));
   };
+
+  useEffect(() => {
+    const initailizeWatchData = JSON.parse(
+      localStorage.getItem("getWatchedlist")
+    );
+
+    console.log(initailizeWatchData, "initailizeWatchData");
+    initailizeWatchData && setWatched(initailizeWatchData);
+  }, []);
+  console.log(watched, "eatf");
   useEffect(() => {
     const controller = new AbortController();
 

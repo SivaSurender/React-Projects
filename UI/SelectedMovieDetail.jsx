@@ -4,6 +4,7 @@ import StarComponent from "./StarComponent";
 import Loader from "./Loader";
 import { toast } from "react-toastify";
 
+const toSetLocal = [];
 function SelectedMovieDetail({
   selectedMovieId,
   setWatched,
@@ -93,21 +94,23 @@ function SelectedMovieDetail({
       handleCloseSelected(selectedMovieId);
       return;
     }
+    const { imdbRating, Title, Year, Poster, imdbID, Runtime } = movieById;
+    const formulatedStructure = {
+      imdbID,
+      imdbRating: Number(imdbRating),
+      userRating: userSetRating,
+      Title,
+      Year,
+      Poster,
+      runtime: Number(Runtime.split(" ").at(0)),
+    };
     setWatched((prev) => {
-      const { imdbRating, Title, Year, Poster, imdbID, Runtime } = movieById;
-      return [
-        ...prev,
-        {
-          imdbID,
-          imdbRating: Number(imdbRating),
-          userRating: userSetRating,
-          Title,
-          Year,
-          Poster,
-          runtime: Number(Runtime.split(" ").at(0)),
-        },
-      ];
+      return [...prev, formulatedStructure];
     });
+
+    toSetLocal.push(formulatedStructure);
+    console.log(toSetLocal, "toSetLocal");
+    localStorage.setItem("getWatchedlist", JSON.stringify(toSetLocal));
     toast.success("Movie added to watchlist !");
     // close the pane after its added
     handleCloseSelected(selectedMovieId);
