@@ -64,7 +64,12 @@ export default function App() {
   const [error, setError] = useState("");
   const [selectedMovieId, setSelectedMovieId] = useState(null);
 
-  const [watched, setWatched] = useState([]);
+  const [watched, setWatched] = useState(() => {
+    const initailizeWatchData = JSON.parse(
+      localStorage.getItem("getWatchedlist")
+    );
+    return initailizeWatchData;
+  });
 
   const selectMoviehandler = (id) => {
     setSelectedMovieId((prev) => {
@@ -96,15 +101,6 @@ export default function App() {
     localStorage.setItem("getWatchedlist", JSON.stringify(temp));
   };
 
-  useEffect(() => {
-    const initailizeWatchData = JSON.parse(
-      localStorage.getItem("getWatchedlist")
-    );
-
-    console.log(initailizeWatchData, "initailizeWatchData");
-    initailizeWatchData && setWatched(initailizeWatchData);
-  }, []);
-  console.log(watched, "eatf");
   useEffect(() => {
     const controller = new AbortController();
 
