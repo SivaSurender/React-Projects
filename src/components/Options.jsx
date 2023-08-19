@@ -1,7 +1,6 @@
 import React from "react";
 
 function Options({ options, dispatch, answer, questions }) {
-  console.log(answer, questions, "ans");
   return (
     <div className="options">
       {options?.map((each, index) => {

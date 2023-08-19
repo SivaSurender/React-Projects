@@ -8,6 +8,7 @@ import Questions from "./components/Questions";
 import NextButton from "./components/NextButton";
 import ProgressBar from "./components/ProgressBar";
 import FinishScreen from "./components/FinishScreen";
+import Timer from "./components/Timer";
 
 const initialState = {
   questions: [],
@@ -16,10 +17,13 @@ const initialState = {
   answer: null,
   points: 0,
   highscore: 0,
+  remainingTime: null,
 };
 function App() {
-  const [{ questions, status, index, answer, points, highscore }, dispatch] =
-    useReducer(reducerFn, initialState);
+  const [
+    { questions, status, index, answer, points, highscore, remainingTime },
+    dispatch,
+  ] = useReducer(reducerFn, initialState);
   const numQuestions = questions?.length;
   const maxPossiblePoints = questions?.reduce(
     (acc, curr) => (acc += curr.points),
@@ -29,7 +33,12 @@ function App() {
   function reducerFn(state, action) {
     switch (action.type) {
       case "dataFetched": {
-        return { ...state, questions: action.payload, status: "ready" };
+        return {
+          ...state,
+          questions: action.payload,
+          status: "ready",
+          remainingTime: state.questions.length * 30,
+        };
       }
       case "dataFetchfailed": {
         return { ...state, status: "error", errorMsg: action.payload };
@@ -69,6 +78,13 @@ function App() {
           status: "ready",
         };
       }
+      case "timer": {
+        return {
+          ...state,
+          remainingTime: state.remainingTime - 1,
+          status: state.remainingTime === 0 ? "finish" : state.status,
+        };
+      }
       default: {
         return initialState;
       }
@@ -84,10 +100,9 @@ function App() {
         }
 
         const data = await res.json();
-        console.log(data, "1");
+
         dispatch({ type: "dataFetched", payload: data });
       } catch (error) {
-        console.log(error);
         dispatch({ type: "dataFetchfailed", payload: error.message });
       }
     };
@@ -95,7 +110,6 @@ function App() {
     getQuest();
   }, []);
 
-  console.log(answer, "xz ");
   return (
     <div className="app">
       <Header />
@@ -120,6 +134,7 @@ function App() {
                 dispatch={dispatch}
                 answer={answer}
               />
+              <Timer remainingTime={remainingTime} dispatch={dispatch} />
               <NextButton
                 dispatch={dispatch}
                 answer={answer}
