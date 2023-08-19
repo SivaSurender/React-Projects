@@ -17,7 +17,7 @@ function Timer({ remainingTime, dispatch }) {
     return () => {
       clearInterval(interval);
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="timer">
