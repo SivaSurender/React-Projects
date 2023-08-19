@@ -7,6 +7,7 @@ import Error from "./Error";
 import Questions from "./components/Questions";
 import NextButton from "./components/NextButton";
 import ProgressBar from "./components/ProgressBar";
+import FinishScreen from "./components/FinishScreen";
 
 const initialState = {
   questions: [],
@@ -14,12 +15,11 @@ const initialState = {
   index: 0,
   answer: null,
   points: 0,
+  highscore: 0,
 };
 function App() {
-  const [{ questions, status, index, answer, points }, dispatch] = useReducer(
-    reducerFn,
-    initialState
-  );
+  const [{ questions, status, index, answer, points, highscore }, dispatch] =
+    useReducer(reducerFn, initialState);
   const numQuestions = questions?.length;
   const maxPossiblePoints = questions?.reduce(
     (acc, curr) => (acc += curr.points),
@@ -54,6 +54,14 @@ function App() {
           answer: null,
         };
       }
+      case "finish": {
+        return {
+          ...state,
+          status: "finish",
+          highscore:
+            state.points > state.highscore ? state.points : state.highscore,
+        };
+      }
       default: {
         return initialState;
       }
@@ -85,7 +93,43 @@ function App() {
     <div className="app">
       <Header />
       <Main>
-        {status === "loading" && <Loader />}
+        {{
+          loading: () => <Loader />,
+          error: () => <Error />,
+          ready: () => (
+            <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+          ),
+          active: () => (
+            <>
+              <ProgressBar
+                numQuestions={numQuestions}
+                maxPossiblePoints={maxPossiblePoints}
+                index={index}
+                answer={answer}
+                points={points}
+              />
+              <Questions
+                questions={questions[index]}
+                dispatch={dispatch}
+                answer={answer}
+              />
+              <NextButton
+                dispatch={dispatch}
+                answer={answer}
+                index={index}
+                questions={questions}
+              />
+            </>
+          ),
+          finish: () => (
+            <FinishScreen
+              points={points}
+              maxPossiblePoints={maxPossiblePoints}
+              highscore={highscore}
+            />
+          ),
+        }[status]()}
+        {/* {status === "loading" && <Loader />}
         {status === "error" && <Error />}
         {status === "ready" && (
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
@@ -104,9 +148,21 @@ function App() {
               dispatch={dispatch}
               answer={answer}
             />
-            <NextButton dispatch={dispatch} answer={answer} />
+            <NextButton
+              dispatch={dispatch}
+              answer={answer}
+              index={index}
+              questions={questions}
+            />
           </>
         )}
+        {status === "finish" && (
+          <FinishScreen
+            points={points}
+            maxPossiblePoints={maxPossiblePoints}
+            highscore={highscore}
+          />
+        )} */}
       </Main>
     </div>
   );
