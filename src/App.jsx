@@ -62,6 +62,13 @@ function App() {
             state.points > state.highscore ? state.points : state.highscore,
         };
       }
+      case "restart": {
+        return {
+          ...initialState,
+          questions: state.questions,
+          status: "ready",
+        };
+      }
       default: {
         return initialState;
       }
@@ -126,43 +133,10 @@ function App() {
               points={points}
               maxPossiblePoints={maxPossiblePoints}
               highscore={highscore}
+              dispatch={dispatch}
             />
           ),
         }[status]()}
-        {/* {status === "loading" && <Loader />}
-        {status === "error" && <Error />}
-        {status === "ready" && (
-          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
-        )}
-        {status === "active" && (
-          <>
-            <ProgressBar
-              numQuestions={numQuestions}
-              maxPossiblePoints={maxPossiblePoints}
-              index={index}
-              answer={answer}
-              points={points}
-            />
-            <Questions
-              questions={questions[index]}
-              dispatch={dispatch}
-              answer={answer}
-            />
-            <NextButton
-              dispatch={dispatch}
-              answer={answer}
-              index={index}
-              questions={questions}
-            />
-          </>
-        )}
-        {status === "finish" && (
-          <FinishScreen
-            points={points}
-            maxPossiblePoints={maxPossiblePoints}
-            highscore={highscore}
-          />
-        )} */}
       </Main>
     </div>
   );
