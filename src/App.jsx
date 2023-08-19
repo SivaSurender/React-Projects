@@ -11,6 +11,7 @@ const initialState = {
   status: "loading",
   index: 0,
   answer: null,
+  points: 0,
 };
 function App() {
   const [{ questions, status, index, answer }, dispatch] = useReducer(
@@ -31,7 +32,14 @@ function App() {
         return { ...state, status: "active" };
       }
       case "recordedAnswer": {
-        return { ...state, answer: action.payload };
+        return {
+          ...state,
+          answer: action.payload,
+          points:
+            state.questions[state.index].correctOption === action.payload
+              ? state.points + state.questions[state.index].points
+              : state.points,
+        };
       }
       default: {
         return initialState;
