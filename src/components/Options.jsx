@@ -1,22 +1,22 @@
 import React from "react";
 
 function Options({ options, dispatch, answer, questions }) {
-  console.log(answer === questions.correctOption, "ans");
+  console.log(answer, questions, "ans");
   return (
     <div className="options">
       {options?.map((each, index) => {
         return (
           <button
             className={`btn btn-option ${index === answer ? "answer" : ""} ${
-              answer
-                ? questions.correctOption === index
+              answer !== null
+                ? index === questions.correctOption
                   ? "correct"
                   : "wrong"
                 : ""
             }`}
             key={each}
             onClick={() => dispatch({ type: "recordedAnswer", payload: index })}
-            disabled={answer}
+            disabled={answer !== null}
           >
             {each}
           </button>
