@@ -41,6 +41,10 @@ function App() {
     [isFakeDark]
   );
 
+  const archivedPosts = {
+    isArchNeeded: false,
+    title: "Additional archived posts added",
+  };
   return (
     <section>
       <button
@@ -57,7 +61,7 @@ function App() {
         setSearchQuery={setSearchQuery}
       />
       <Main posts={searchedPosts} onAddPost={handleAddPost} />
-      <Archive onAddPost={false} />
+      <Archive onAddPost={archivedPosts} />
       <Footer />
     </section>
   );
@@ -161,11 +165,11 @@ const Archive = memo(function ({ onAddPost }) {
     Array.from({ length: 10000 }, () => createRandomPost())
   );
 
-  const [showArchive, setShowArchive] = useState(onAddPost);
+  const [showArchive, setShowArchive] = useState(onAddPost.isArchNeeded);
 
   return (
     <aside>
-      <h2>Post archive</h2>
+      <h2>{onAddPost.title}</h2>
       <button onClick={() => setShowArchive((s) => !s)}>
         {showArchive ? "Hide archive posts" : "Show archive posts"}
       </button>
